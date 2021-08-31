@@ -7,28 +7,27 @@
 #grid {
     border: 2px solid rgba(131, 131, 131, 0.452);
     background-color: rgba(255, 255, 255, 0.5);
-    width: 408px;
-    height: 612px;
+    width: 400px;
+    height: 600px;
     margin: 10vmin;
     display: grid;
-    justify-content: center;
     grid-template-columns: repeat(4, 100px);
-    grid-template-rows: repeat(6, 100px);
-    grid-row-gap: 2px;
-    grid-column-gap: 2px;
+    grid-template-rows: 16px 80px 2px repeat(5, 100px);
     grid-template-areas: 
+        "small-display small-display small-display small-display"
         "display display display display"
-        "clear delete . power"
-        ". . . divide"
-        ". . . multiply"
-        ". . . subtract"
-        ". . equals add";
+        ". . . ."
+        "clear delete sign power"
+        "seven eight nine divide"
+        "four five six multiply"
+        "one two three subtract"
+        "decimal zero equals add";
 }
 
 button {
     border: 0;
     background-color: rgba(158, 208, 216, 0.5);
-    font-size: 1.5rem;
+    font-size: 24px;
     border-radius: 50%;
 }
 
@@ -41,13 +40,18 @@ button:hover {
     background-color: rgba(235, 235, 235, 0.5);
 }
 
+#small-display {
+    background-color: rgba(215, 215, 215, 0.5);
+    grid-area: small-display;
+    font-size: 16px;
+    overflow-wrap: break-word;
+}
+
 #display {
     background-color: rgba(215, 215, 215, 0.5);
-    padding: 0px;
-    margin: 0px;
     grid-area: display;
     text-align: right;
-    padding-right: 15px;
+    font-size: 64px;
 }
 
 #clear {
@@ -58,6 +62,10 @@ button:hover {
 #delete {
     grid-area: delete;
     background-color: rgba(255, 160, 122, 0.5);
+}
+
+#sign {
+    background-color: rgba(158, 208, 216, 0.5);
 }
 
 #equals {
@@ -82,4 +90,52 @@ button:hover {
 
 #power {
     grid-area: power;
+}
+
+#nine {
+    grid-area: nine;
+}
+
+#eight {
+    grid-area: eight;
+}
+
+#seven {
+    grid-area: seven;
+}
+
+#six {
+    grid-area: six;
+}
+
+#five {
+    grid-area: five;
+}
+
+#four {
+    grid-area: four;
+}
+
+#three {
+    grid-area: three;
+}
+
+#two {
+    grid-area: two;
+}
+
+#one {
+    grid-area: one;
+}
+
+#zero {
+    grid-area: zero;
+}
+
+#sign {
+    grid-area: sign;
+}
+
+#decimal {
+    grid-area: decimal;
 }

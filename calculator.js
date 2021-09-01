@@ -13,8 +13,8 @@ const OVERFLOW = "Overflow";
 const ERRORS = [DIVIDE_BY_ZERO, OVERFLOW];
 const MAX_DIGITS = 9;
 
-let operand1 = ""; // holds sum
-let operand2 = ""; // gets updated with user input
+let operand1 = ""; // Holds sum
+let operand2 = ""; // Gets updated with user input
 let operator = "";
 let displayValue = "0";
 
@@ -44,7 +44,7 @@ function resetValues() {
 
 function add(a, b) {
     let c = a + b;
-    // check for overflow
+    // Check for overflow
     if (c >= Number.MAX_SAFE_INTEGER) {
         displayValue = OVERFLOW;
         resetValues();
@@ -55,7 +55,7 @@ function add(a, b) {
 
 function subtract(a, b) {
     let c = a - b;
-    // check for overflow
+    // Check for overflow
     if (c <= Number.MIN_SAFE_INTEGER) {
         displayValue = OVERFLOW;
         resetValues();
@@ -66,7 +66,7 @@ function subtract(a, b) {
 
 function multiply(a, b) {
     let c = a * b;
-    // check for overflow
+    // Check for overflow
     if (c >= Number.MAX_SAFE_INTEGER) {
         displayValue = OVERFLOW;
         resetValues();
@@ -76,7 +76,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    // check for divide by 0
+    // Check for divide by 0
     if (!b) {
         displayValue = DIVIDE_BY_ZERO;
         resetValues();
@@ -87,6 +87,7 @@ function divide(a, b) {
 
 function power(a, b) {
     let c = Math.pow(a, b);
+    // Check for overflow
     if (c >= Number.MAX_SAFE_INTEGER  || c <= Number.MIN_SAFE_INTEGER)
     {
         displayValue = OVERFLOW;
@@ -106,23 +107,15 @@ function fitToScreen(display) {
         if (digitsBeforeDecimal === -1) {
             // If num has no decimal, convert to scientific notation
             exponent = (len - 1 - neg).toString();
-            d = display.substring(0, 1 + neg) + "." + display.substring(1 + neg, MAX_DIGITS - exponent.length - 1) + "E" + exponent;
+            d = display.substring(0, 1 + neg) + "." + display.substring(1 + neg, MAX_DIGITS - exponent.length - 2) + "e" + exponent;
         } else {
-            let count = 0;
-            for (let i = 0; i < len; i++) {
-                if (d.charAt(i) === "0") {
-                    count++;
-                } else if (d.charAt(i) !== "." || d.charAt(i) !== "-") {
-                    break;
-                }
-            }
-            if (count > 1) {
-                // If num has a decimal and can be written in scientific notation, do it
-                exponent = count.toString();
-                d = display.substring(count + 1 + neg, count + 2 + neg) + "." + display.substring(count + 2 + neg, count + MAX_DIGITS - 2) + "E-" + exponent;
+            let exp = d.indexOf("e");
+            if (exp !== -1){
+                // If num is already in scientific notation
+                d = display.substring(0, MAX_DIGITS - len + exp) + display.substring(exp);
             } else {
                 // Else, truncate digits
-                d = parseFloat(display).toFixed(MAX_DIGITS - digitsBeforeDecimal);
+                d = display.substring(0, MAX_DIGITS);
             }
         }
     }
@@ -171,7 +164,6 @@ const operate = e => {
     }
     // Set operator = button press unless it was an equals
     (e.target.textContent !== EQUALS) ? operator = e.target.textContent : operator = "";
-
     changeDisplayText();
 }
 
@@ -180,7 +172,7 @@ const updateDisplay = e => {
     switch (button_pressed) {
         case CLEAR:
             resetValues();
-            displayValue = "0"; // clear text even if it is an error message
+            displayValue = "0"; // Clear text even if it is an error message
             break;
         case DELETE:
             if (!ERRORS.includes(displayValue)) {
@@ -205,8 +197,8 @@ const updateDisplay = e => {
         case DECIMAL:
             if (!ERRORS.includes(displayValue)) {
                 // Only append a decimal if there aren't any decimals yet
-                if (displayValue.indexOf('.') === -1) {
-                    (operand2 === "") ? operand2 = "0." : operand2 = displayValue;
+                if (operand2.indexOf('.') === -1) {
+                    (operand2 === "") ? operand2 = "0." : operand2 += ".";
                     displayValue = operand2;
                 }
             }
@@ -217,8 +209,8 @@ const updateDisplay = e => {
                 // Don't append numbers to 0
                 displayValue = button_pressed;
                 operand2 = displayValue;
-            } else if (!ERRORS.includes(displayValue)) {
-                // Append value if operand2 isn't null
+            } else if (!ERRORS.includes(displayValue) && operand2.length < 75) {
+                // Append value if operand2 isn't null and operand2 isn't wrapping too far
                 displayValue += button_pressed;
                 operand2 += button_pressed;
             }

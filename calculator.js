@@ -57,7 +57,7 @@ function multiply(a, b) {
 
 function divide(a, b) {
     // check for divide by 0
-    if (b === 0) {
+    if (!b) {
         displayValue = DIVIDE_BY_ZERO;
         resetValues();
         return "";
@@ -72,9 +72,20 @@ function divide(a, b) {
     return c;
 }
 
+function power(a, b) {
+    let c = a;
+    while (b-- > 1) {
+        c = multiply(c, a);
+        if (c = "") {
+            return c;
+        }
+    }
+    return c;
+}
+
 const operate = e => {
     let x;
-    if (operand1 !== "" && operand2 !== "" && displayValue !== DIVIDE_BY_ZERO) {
+    if (operand1 !== "" && operand2 !== "" && !ERRORS.includes(displayValue)) {
         switch (operator) {
             case MULTIPLY:
                 operand1 = multiply(parseFloat(operand1) * parseFloat(operand2)).toString();
@@ -89,14 +100,13 @@ const operate = e => {
                 operand1 = subtract(parseFloat(operand1), parseFloat(operand2)).toString();
                 break;
             case POWER:
-                x = parseFloat(operand1) ** parseFloat(operand2);
-                operand1 = x.toString();
+                operand1 = power(parseFloat(operand1), parseFloat(operand2)).toString();
                 break;
             default:
                 operand1 = operand2;
         }
         // Update displayValue, reset operand2
-        if (!EERRORS.includes(displayValue)) {
+        if (!ERRORS.includes(displayValue)) {
             displayValue = operand1;
             operand2 = "";
         }
@@ -133,10 +143,11 @@ const updateDisplay = e => {
     switch (button_pressed) {
         case CLEAR:
             resetValues();
+            displayValue = "0";
             break;
         case DELETE:
             // Delete last value of display, update operand
-            if (displayValue !== DIVIDE_BY_ZERO) {
+            if (!ERRORS.includes(displayValue)) {
                 if (displayValue.length > 1) {
                     displayValue = displayValue.substring(0, displayValue.length - 1);
                     operand2 = displayValue;

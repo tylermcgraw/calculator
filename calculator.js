@@ -45,7 +45,7 @@ function resetValues() {
 function add(a, b) {
     let c = a + b;
     // Check for overflow
-    if (c >= Number.MAX_SAFE_INTEGER) {
+    if (c >= Number.MAX_SAFE_INTEGER  || c <= Number.MIN_SAFE_INTEGER) {
         displayValue = OVERFLOW;
         resetValues();
         return "";
@@ -56,7 +56,7 @@ function add(a, b) {
 function subtract(a, b) {
     let c = a - b;
     // Check for overflow
-    if (c <= Number.MIN_SAFE_INTEGER) {
+    if (c >= Number.MAX_SAFE_INTEGER  || c <= Number.MIN_SAFE_INTEGER) {
         displayValue = OVERFLOW;
         resetValues();
         return "";
@@ -67,7 +67,7 @@ function subtract(a, b) {
 function multiply(a, b) {
     let c = a * b;
     // Check for overflow
-    if (c >= Number.MAX_SAFE_INTEGER) {
+    if (c >= Number.MAX_SAFE_INTEGER  || c <= Number.MIN_SAFE_INTEGER) {
         displayValue = OVERFLOW;
         resetValues();
         return "";
@@ -82,14 +82,19 @@ function divide(a, b) {
         resetValues();
         return "";
     }
-    return a / b;
+    let c = a / b;
+    if (c >= Number.MAX_SAFE_INTEGER  || c <= Number.MIN_SAFE_INTEGER) {
+        displayValue - OVERFLOW;
+        resetValues();
+        return"";
+    }
+    return c;
 }
 
 function power(a, b) {
     let c = Math.pow(a, b);
     // Check for overflow
-    if (c >= Number.MAX_SAFE_INTEGER  || c <= Number.MIN_SAFE_INTEGER)
-    {
+    if (c >= Number.MAX_SAFE_INTEGER  || c <= Number.MIN_SAFE_INTEGER) {
         displayValue = OVERFLOW;
         resetValues();
         return "";

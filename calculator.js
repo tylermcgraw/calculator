@@ -116,12 +116,16 @@ function fitToScreen(display) {
         } else {
             let exp = d.indexOf("e");
             if (exp !== -1){
-                // If num is already in scientific notation
+                // If num is already in scientific notation, shorten
                 d = display.substring(0, MAX_DIGITS - len + exp) + display.substring(exp);
             } else {
                 // Else, truncate digits
                 d = display.substring(0, MAX_DIGITS);
             }
+        }
+        // Make sure num doesn't end with a decimal point
+        if (d.charAt(d.length - 1) === ".") {
+            d = d.substring(0, d.length - 1);
         }
     }
     return d;
